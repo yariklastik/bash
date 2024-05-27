@@ -1,0 +1,32 @@
+#!/bin/bash
+
+show_os_version() {
+  echo "OS Version:"
+  if [ -f /etc/os-release ]; then
+    cat /etc/os-release
+  else
+    echo "OS version not found."
+  fi
+  echo ""
+}
+list_bash_users() {
+  echo "Users with bash shell:"
+  grep '/bin/bash' /etc/passwd | cut -d: -f1
+  echo ""
+}
+show_open_ports() {
+  echo "Open Ports:"
+  if command -v netstat &> /dev/null; then
+    netstat -tuln | grep LISTEN
+  elif command -v ss &> /dev/null; then
+    ss -tuln
+  else
+    echo "wrong."
+  fi
+  echo ""
+}
+
+# Run functions
+show_os_version
+list_bash_users
+show_open_ports
